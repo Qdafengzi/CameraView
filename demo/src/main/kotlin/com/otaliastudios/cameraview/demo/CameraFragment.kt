@@ -51,8 +51,11 @@ class CameraFragment:Fragment(),OptionView.Callback  {
 
     private var captureTime: Long = 0
 
-
     private val allFilters = Filters.values()
+    private var mLevelFilter: ImageLevelFilter? = null
+    private var mBackgroundFilter: ImageLevelFilter? = null
+    private var mWhiteBalanceFilter: WhiteBalanceFilter? = null
+    private var currentFilter = 0
 
     
     lateinit var mBinding:FragmentCameraBinding
@@ -448,10 +451,6 @@ class CameraFragment:Fragment(),OptionView.Callback  {
     }
 
 
-    private var mLevelFilter: ImageLevelFilter? = null
-    private var mBackgroundFilter: ImageLevelFilter? = null
-    private var mWhiteBalanceFilter: WhiteBalanceFilter? = null
-    private var currentFilter = 0
     private fun changeCurrentFilter() {
         if (mBinding.camera.preview != Preview.GL_SURFACE) return run {
             message("Filters are supported only when preview is Preview.GL_SURFACE.", true)
@@ -511,14 +510,6 @@ class CameraFragment:Fragment(),OptionView.Callback  {
 //        BottomSheetBehavior.from(controlPanel).state = BottomSheetBehavior.STATE_HIDDEN
         message("Changed " + option.name + " to " + name, false)
         return true
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val valid = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
-        if (valid && !mBinding.camera.isOpened) {
-            mBinding.camera.open()
-        }
     }
 
     private fun message(content: String, important: Boolean) {
