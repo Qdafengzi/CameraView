@@ -6,12 +6,12 @@ plugins {
 
 android {
 
-    namespace  = "com.otaliastudios.cameraview.demo"
+    namespace  = "com.picupmedia.cameraview.demo"
 
     compileSdk = property("compileSdkVersion") as Int
 
     defaultConfig {
-        applicationId = "com.otaliastudios.cameraview.demo"
+        applicationId = "com.picupmedia.cameraview.demo"
         minSdk = property("minSdkVersion") as Int
         targetSdk = property("targetSdkVersion") as Int
         versionCode = 1
@@ -23,6 +23,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    viewBinding {
+        enable = true
     }
 
     @Suppress("UnstableApiUsage")

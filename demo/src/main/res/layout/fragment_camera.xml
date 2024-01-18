@@ -13,7 +13,7 @@
         android:background="#FF444444">
 
         <!-- Camera -->
-        <com.otaliastudios.cameraview.CameraView
+        <com.picupmedia.cameraview.CameraView
             android:id="@+id/camera"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -56,7 +56,7 @@
                 app:layout_drawOnPreview="true"
                 app:layout_drawOnVideoSnapshot="true" />
 
-        </com.otaliastudios.cameraview.CameraView>
+        </com.picupmedia.cameraview.CameraView>
 
 
         <LinearLayout
