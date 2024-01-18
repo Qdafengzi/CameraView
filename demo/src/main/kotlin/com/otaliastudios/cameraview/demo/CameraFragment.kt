@@ -373,6 +373,15 @@ class CameraFragment:Fragment(),OptionView.Callback  {
                 mBinding.camera.exposureCorrection = newValue
             }
         }
+        mBinding.openCheckBox.setOnCheckedChangeListener { compoundButton, b ->
+            if (b){
+                mBinding.camera.open()
+                mBinding.cameraOpen.text = "open"
+            }else{
+                mBinding.camera.close()
+                mBinding.cameraOpen.text = "close"
+            }
+        }
     }
 
     fun getValue(max: Float, min: Float, sliderMax: Float, sliderMin: Float, progress: Float): Float {
@@ -380,8 +389,6 @@ class CameraFragment:Fragment(),OptionView.Callback  {
         val intercept = min - slope * sliderMin
         return (slope * progress + intercept)
     }
-
-
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun colorTemperature(factor: Int): RggbChannelVector =

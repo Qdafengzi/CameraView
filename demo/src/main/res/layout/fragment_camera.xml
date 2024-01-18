@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:keepScreenOn="true"
             app:cameraAudio="on"
-            app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker"
+            app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker_custom"
             app:cameraEngine="camera2"
             app:cameraExperimental="true"
             app:cameraFacing="back"
@@ -109,21 +109,24 @@
                 android:id="@+id/changeFilter"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background"
                 android:elevation="3dp"
-                app:srcCompat="@drawable/filter_filling" />
+                app:srcCompat="@drawable/filter_filling"
+                 />
 
             <ImageButton
                 android:id="@+id/toggleCamera"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background"
                 android:elevation="3dp"
-                app:srcCompat="@drawable/ic_switch" />
+                app:srcCompat="@drawable/ic_switch"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp" />
         </LinearLayout>
 
 
@@ -143,7 +146,7 @@
                 <LinearLayout
                     android:id="@+id/mLL"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -250,6 +253,18 @@
 
                         <CheckBox
                             android:id="@+id/white_balance_check_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/cameraOpen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="open"
+                            android:textColor="#fff" />
+
+                        <CheckBox
+                            android:id="@+id/open_check_box"
+                            android:checked="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
