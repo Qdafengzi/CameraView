@@ -2,6 +2,7 @@ package com.otaliastudios.cameraview;
 
 
 import android.graphics.ImageFormat;
+import android.util.Range;
 
 import com.otaliastudios.cameraview.controls.Audio;
 import com.otaliastudios.cameraview.controls.AudioCodec;
@@ -51,6 +52,9 @@ public abstract class CameraOptions {
     protected boolean autoFocusSupported;
     protected float previewFrameRateMinValue;
     protected float previewFrameRateMaxValue;
+    protected float maxZoomRatio;
+    protected Range<Float> zoomRange;
+    protected boolean supportWhiteBalanceFlag;
 
     protected CameraOptions() { }
 
@@ -248,6 +252,10 @@ public abstract class CameraOptions {
         return zoomSupported;
     }
 
+    public final float getMaxZoomRatio() {
+        return maxZoomRatio;
+    }
+
 
     /**
      * Whether touch metering (metering with respect to a specific region of the screen) is
@@ -309,5 +317,13 @@ public abstract class CameraOptions {
      */
     public final float getPreviewFrameRateMaxValue() {
         return previewFrameRateMaxValue;
+    }
+
+    public final boolean getIsSupportWhiteBalance() {
+        return supportWhiteBalanceFlag;
+    }
+
+    public final Range<Float> getZoomRange() {
+        return zoomRange;
     }
 }

@@ -23,6 +23,8 @@ import com.otaliastudios.cameraview.filters.SharpnessFilter;
 import com.otaliastudios.cameraview.filters.TemperatureFilter;
 import com.otaliastudios.cameraview.filters.TintFilter;
 import com.otaliastudios.cameraview.filters.VignetteFilter;
+import com.otaliastudios.cameraview.filters.custom.ImageLevelFilter;
+import com.otaliastudios.cameraview.filters.custom.WhiteBalanceFilter;
 
 /**
  * Contains commonly used {@link Filter}s.
@@ -94,6 +96,9 @@ public enum Filters {
 
     /** @see TintFilter */
     TINT(TintFilter.class),
+
+    LEVEL(ImageLevelFilter.class),
+    WHITE_BALANCE(WhiteBalanceFilter.class),
 
     /** @see VignetteFilter */
     VIGNETTE(VignetteFilter.class);

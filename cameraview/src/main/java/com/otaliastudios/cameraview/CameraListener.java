@@ -1,6 +1,8 @@
 package com.otaliastudios.cameraview;
 
 import android.graphics.PointF;
+import android.hardware.camera2.params.RggbChannelVector;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
@@ -169,5 +171,10 @@ public abstract class CameraListener {
     public void onPictureShutter() {
 
     }
-    
+
+    @UiThread
+    public void onWhiteBalance(RggbChannelVector rggbChannelVector) {
+    }
+
+
 }

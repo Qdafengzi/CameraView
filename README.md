@@ -164,3 +164,14 @@ Using CameraView is extremely simple:
         
 </com.otaliastudios.cameraview.CameraView>
 ```
+
+
+white and black
+tint
+//tempreatrue
+
+
+
+
+
+

@@ -5,6 +5,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.MeteringRectangle;
+import android.hardware.camera2.params.RggbChannelVector;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.annotation.RequiresApi;
 
 import com.otaliastudios.cameraview.CameraLogger;
 import com.otaliastudios.cameraview.engine.action.ActionHolder;
+import com.otaliastudios.cameraview.utils.XLogger;
 
 import java.util.List;
 
@@ -71,6 +73,15 @@ public class WhiteBalanceMeter extends BaseMeter {
                                    @NonNull CaptureRequest request,
                                    @NonNull TotalCaptureResult result) {
         super.onCaptureCompleted(holder, request, result);
+        Integer awbMode = result.get(CaptureResult.CONTROL_AWB_MODE);
+        if (awbMode != null && awbMode == CaptureResult.CONTROL_AWB_MODE_AUTO) {
+            RggbChannelVector rggbChannelVector = result.get(CaptureResult.COLOR_CORRECTION_GAINS);
+            if (rggbChannelVector != null) {
+                XLogger.d("green:" + rggbChannelVector.getGreenOdd() + " red:" + rggbChannelVector.getRed());
+            }
+        }
+
+
         Integer awbState = result.get(CaptureResult.CONTROL_AWB_STATE);
         LOG.i("onCaptureCompleted:", "awbState:", awbState);
         if (awbState == null) return;

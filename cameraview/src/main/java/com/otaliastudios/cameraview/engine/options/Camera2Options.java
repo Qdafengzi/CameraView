@@ -4,6 +4,7 @@ import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
@@ -24,6 +25,7 @@ import com.otaliastudios.cameraview.engine.mappers.Camera2Mapper;
 import com.otaliastudios.cameraview.internal.CamcorderProfiles;
 import com.otaliastudios.cameraview.size.AspectRatio;
 import com.otaliastudios.cameraview.size.Size;
+import com.otaliastudios.cameraview.utils.XLogger;
 
 import java.util.Set;
 
@@ -54,6 +56,9 @@ public class Camera2Options extends CameraOptions {
         int[] awbModes = cameraCharacteristics.get(CONTROL_AWB_AVAILABLE_MODES);
         //noinspection ConstantConditions
         for (int awbMode : awbModes) {
+            if (awbMode ==  CaptureRequest.CONTROL_AWB_MODE_AUTO){
+                supportWhiteBalanceFlag = true;
+            }
             WhiteBalance value = mapper.unmapWhiteBalance(awbMode);
             if (value != null) supportedWhiteBalance.add(value);
         }
@@ -102,6 +107,7 @@ public class Camera2Options extends CameraOptions {
         Range<Integer> exposureRange = cameraCharacteristics.get(CONTROL_AE_COMPENSATION_RANGE);
         Rational exposureStep = cameraCharacteristics.get(CONTROL_AE_COMPENSATION_STEP);
         if (exposureRange != null && exposureStep != null && exposureStep.floatValue() != 0) {
+            //XLogger.d("lower:"+exposureRange.getLower() +" upper:"+exposureRange.getUpper());
             exposureCorrectionMinValue = exposureRange.getLower() / exposureStep.floatValue();
             exposureCorrectionMaxValue = exposureRange.getUpper() / exposureStep.floatValue();
         }
@@ -182,6 +188,23 @@ public class Camera2Options extends CameraOptions {
             // Ensure it is a raw format
             if (ImageFormat.getBitsPerPixel(outputFormat) > 0) {
                 supportedFrameProcessingFormats.add(outputFormat);
+            }
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Range<Float> floatRange = cameraCharacteristics.get(CONTROL_ZOOM_RATIO_RANGE);
+            if (floatRange != null) {
+                float upper = floatRange.getUpper();
+                maxZoomRatio = upper;
+                zoomRange = floatRange;
+                XLogger.d("upper:" + upper + " lower:" + floatRange.getLower());
+            }
+        } else {
+            Float maxZoomRatioValue = cameraCharacteristics.get(SCALER_AVAILABLE_MAX_DIGITAL_ZOOM);
+            if (maxZoomRatioValue != null) {
+                maxZoomRatio = maxZoomRatioValue;
+                zoomRange = new Range<>(1f, maxZoomRatio);
             }
         }
     }

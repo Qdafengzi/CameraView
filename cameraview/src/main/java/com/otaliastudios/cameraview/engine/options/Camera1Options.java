@@ -3,6 +3,8 @@ package com.otaliastudios.cameraview.engine.options;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
+import android.os.Build;
+import android.util.Range;
 
 import androidx.annotation.NonNull;
 
@@ -16,6 +18,7 @@ import com.otaliastudios.cameraview.engine.mappers.Camera1Mapper;
 import com.otaliastudios.cameraview.internal.CamcorderProfiles;
 import com.otaliastudios.cameraview.size.AspectRatio;
 import com.otaliastudios.cameraview.size.Size;
+import com.otaliastudios.cameraview.utils.XLogger;
 
 import java.util.List;
 
@@ -35,6 +38,8 @@ public class Camera1Options extends CameraOptions {
 
         // WB
         strings = params.getSupportedWhiteBalance();
+        //是否支持白平衡
+        supportWhiteBalanceFlag = strings != null && strings.contains(Camera.Parameters.WHITE_BALANCE_AUTO);
         if (strings != null) {
             for (String string : strings) {
                 WhiteBalance value = mapper.unmapWhiteBalance(string);
@@ -132,5 +137,13 @@ public class Camera1Options extends CameraOptions {
 
         // Frame processing formats
         supportedFrameProcessingFormats.add(ImageFormat.NV21);
+
+        int maxZoomLevel = params.getMaxZoom();
+        List<Integer> zoomRatios = params.getZoomRatios();
+        maxZoomRatio = zoomRatios.get(maxZoomLevel) / 100f;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            zoomRange = new Range<>(1f, maxZoomRatio);
+        }
+        XLogger.d("maxZoomLevel:" + maxZoomLevel + " maxZoomRatio:" + maxZoomRatio);
     }
 }

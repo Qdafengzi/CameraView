@@ -2,11 +2,13 @@ package com.otaliastudios.cameraview.engine;
 
 import android.content.Context;
 import android.graphics.PointF;
+import android.hardware.camera2.params.RggbChannelVector;
 import android.location.Location;
 
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Range;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -128,6 +130,7 @@ public abstract class CameraEngine implements
         void dispatchError(CameraException exception);
         void dispatchOnVideoRecordingStart();
         void dispatchOnVideoRecordingEnd();
+        void dispatchWhiteBalance(RggbChannelVector rggbChannelVector);
     }
 
     protected static final String TAG = CameraEngine.class.getSimpleName();
@@ -723,6 +726,10 @@ public abstract class CameraEngine implements
                                    @Nullable FileDescriptor fileDescriptor);
     public abstract void takeVideoSnapshot(@NonNull VideoResult.Stub stub, @NonNull File file);
     public abstract void stopVideo();
+
+    public abstract void toggleWhiteBalance(Boolean toggle);
+    public abstract void setTemperature(RggbChannelVector rggbChannelVector);
+
 
     //endregion
 }

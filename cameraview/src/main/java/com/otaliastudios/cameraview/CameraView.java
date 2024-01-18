@@ -12,12 +12,14 @@ import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.hardware.camera2.params.RggbChannelVector;
 import android.location.Location;
 import android.media.MediaActionSound;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Range;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +87,7 @@ import com.otaliastudios.cameraview.size.Size;
 import com.otaliastudios.cameraview.size.SizeSelector;
 import com.otaliastudios.cameraview.size.SizeSelectorParser;
 import com.otaliastudios.cameraview.size.SizeSelectors;
+import com.otaliastudios.cameraview.utils.XLogger;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -103,6 +106,8 @@ import static android.view.View.MeasureSpec.AT_MOST;
 import static android.view.View.MeasureSpec.EXACTLY;
 import static android.view.View.MeasureSpec.UNSPECIFIED;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Entry point for the whole library.
@@ -703,10 +708,13 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
                 break;
 
             case EXPOSURE_CORRECTION:
+                XLogger.d("EXPOSURE_CORRECTION");
                 oldValue = mCameraEngine.getExposureCorrectionValue();
                 float minValue = options.getExposureCorrectionMinValue();
                 float maxValue = options.getExposureCorrectionMaxValue();
+
                 newValue = source.computeValue(oldValue, minValue, maxValue);
+                XLogger.d("newValue:"+newValue +" oldValue:"+oldValue+" minValue:"+minValue+" maxValue:"+maxValue);
                 if (newValue != oldValue) {
                     float[] bounds = new float[]{minValue, maxValue};
                     mCameraEngine.setExposureCorrection(newValue, bounds, points, true);
@@ -2178,6 +2186,15 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
     public boolean getDrawHardwareOverlays() {
         return mOverlayLayout.getHardwareCanvasEnabled();
     }
+
+    public void toggleWhiteBalance(Boolean toggle) {
+        mCameraEngine.toggleWhiteBalance(toggle);
+    }
+
+    public void setTemperature(RggbChannelVector rggbChannelVector) {
+        mCameraEngine.setTemperature(rggbChannelVector);
+    }
+
     //endregion
 
     //region Callbacks and dispatching
@@ -2470,6 +2487,18 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
                 public void run() {
                     for (CameraListener listener : mListeners) {
                         listener.onVideoRecordingEnd();
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void dispatchWhiteBalance(RggbChannelVector rggbChannelVector) {
+            mUiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (CameraListener listener : mListeners) {
+                        listener.onWhiteBalance(rggbChannelVector);
                     }
                 }
             });
