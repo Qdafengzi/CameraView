@@ -48,4 +48,7 @@ dependencies {
     api("com.google.android.gms:play-services-tasks:18.1.0")
     implementation("androidx.annotation:annotation:1.7.1")
     implementation("com.otaliastudios.opengl:egloo:0.6.1")
+
+
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 }

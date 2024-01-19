@@ -800,6 +800,7 @@ public class CameraView extends FrameLayout implements DefaultLifecycleObserver 
     @Override
     public void onResume(@NonNull LifecycleOwner owner) {
         DefaultLifecycleObserver.super.onResume(owner);
+        XLogger.d("onResume===========>");
         open();
     }
 
